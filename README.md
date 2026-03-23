@@ -1,6 +1,6 @@
 # Algo-Benchmarking
 
-**Project 1 – Algorithmic Benchmarking in Non-Convex Optimization Landscapes**
+**Algorithmic Benchmarking in Non-Convex Optimization Landscapes**
 
 Analyzes the geometry of high-dimensional non-convex optimization landscapes using
 symbolic computation to track convergence trajectories.
