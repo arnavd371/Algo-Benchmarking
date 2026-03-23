@@ -7,28 +7,28 @@ symbolic computation to track convergence trajectories.
 
 ---
 
-## 🌐 Web App
+## 🌐 Interactive Website
 
-An interactive website lets you explore the benchmark functions and optimizers
-directly in your browser — no coding required.
+The project is published as a **static website on GitHub Pages** — no installation or server required.
 
-**Run locally:**
+👉 **Live site:** `https://arnavd371.github.io/Algo-Benchmarking/`
 
-```bash
-pip install -r requirements.txt
-streamlit run app.py
-```
-
-Then open `http://localhost:8501` in your browser.
-
-The app has four sections:
+The site has five interactive sections:
 
 | Section | Description |
 |---|---|
-| 🗺️ **Function Explorer** | Visualise any of the 8 benchmark functions as a 2-D heatmap |
-| 🚀 **Optimisation** | Run one or more algorithms from a custom starting point and watch their trajectories |
-| 📊 **Benchmark Suite** | Grid-sweep a set of functions × optimisers and compare results |
-| 🔬 **Hessian Spectrum** | Sample Hessian eigenvalues across the landscape to measure curvature |
+| 🏠 **Home** | Overview of all benchmark functions and optimisers |
+| 🗺️ **Landscape** | Visualise any of the 8 benchmark functions as a 2-D contour heatmap |
+| 🚀 **Optimise** | Run one or more algorithms from a custom starting point; watch trajectories and live convergence curves |
+| 📊 **Compare** | Run all selected optimisers from the same start; compare final values and iteration counts with bar charts |
+| 🔬 **Hessian Spectrum** | Sample Hessian eigenvalues across the landscape to measure curvature and saddle-point density |
+
+All computation runs **entirely in the browser** (JavaScript + Plotly.js) — no Python server needed.
+
+### Deploying to GitHub Pages
+
+Enable GitHub Pages in your repository settings and set the source to the **`docs/` folder** on the `main` branch.
+The static site is in `docs/` and a `.nojekyll` file is included so GitHub Pages serves it without Jekyll processing.
 
 ---
 
@@ -51,7 +51,7 @@ The app has four sections:
 pip install -r requirements.txt
 ```
 
-**Dependencies:** `numpy`, `scipy`, `sympy`, `matplotlib`, `pandas`, `streamlit`, `pytest`
+**Dependencies:** `numpy`, `scipy`, `sympy`, `matplotlib`, `pandas`, `pytest`
 
 ---
 
@@ -137,7 +137,14 @@ pytest tests/ -q
 
 ```
 Algo-Benchmarking/
-├── app.py                     # Streamlit web application
+├── docs/                      # GitHub Pages static website
+│   ├── index.html             # Single-page interactive app
+│   ├── style.css              # Custom styles
+│   ├── .nojekyll              # Disables Jekyll processing
+│   └── js/
+│       ├── functions.js       # All 8 benchmark functions (JS port)
+│       ├── optimizers.js      # GD, Momentum, Adam, RMSprop (JS port)
+│       └── app.js             # Plotly.js plots + UI logic
 ├── benchmarking/
 │   ├── __init__.py
 │   ├── functions.py       # Benchmark function library
