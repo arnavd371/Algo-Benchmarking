@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Editor artifacts
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Demo output images (generated at runtime)
+*.png
