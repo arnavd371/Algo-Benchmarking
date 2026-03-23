@@ -7,6 +7,31 @@ symbolic computation to track convergence trajectories.
 
 ---
 
+## 🌐 Web App
+
+An interactive website lets you explore the benchmark functions and optimizers
+directly in your browser — no coding required.
+
+**Run locally:**
+
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+Then open `http://localhost:8501` in your browser.
+
+The app has four sections:
+
+| Section | Description |
+|---|---|
+| 🗺️ **Function Explorer** | Visualise any of the 8 benchmark functions as a 2-D heatmap |
+| 🚀 **Optimisation** | Run one or more algorithms from a custom starting point and watch their trajectories |
+| 📊 **Benchmark Suite** | Grid-sweep a set of functions × optimisers and compare results |
+| 🔬 **Hessian Spectrum** | Sample Hessian eigenvalues across the landscape to measure curvature |
+
+---
+
 ## Features
 
 | Module | What it provides |
@@ -26,7 +51,7 @@ symbolic computation to track convergence trajectories.
 pip install -r requirements.txt
 ```
 
-**Dependencies:** `numpy`, `scipy`, `sympy`, `matplotlib`, `pandas`, `pytest`
+**Dependencies:** `numpy`, `scipy`, `sympy`, `matplotlib`, `pandas`, `streamlit`, `pytest`
 
 ---
 
@@ -112,6 +137,7 @@ pytest tests/ -q
 
 ```
 Algo-Benchmarking/
+├── app.py                     # Streamlit web application
 ├── benchmarking/
 │   ├── __init__.py
 │   ├── functions.py       # Benchmark function library
