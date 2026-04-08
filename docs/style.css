@@ -1,0 +1,153 @@
+/* =========================================================
+   style.css — Custom styles for Algo-Benchmarking website
+   ========================================================= */
+
+/* ----- Global ----- */
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #f0f2f5;
+}
+
+/* ----- Navbar ----- */
+.navbar-brand {
+  font-size: 1.2rem;
+  letter-spacing: -0.3px;
+}
+
+/* ----- Tab nav ----- */
+.nav-tabs .nav-link {
+  color: #555;
+  font-weight: 500;
+  border-radius: 0.5rem 0.5rem 0 0;
+  padding: 0.55rem 0.9rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-tabs .nav-link:hover {
+  background: #e8eaf0;
+  color: #222;
+}
+
+.nav-tabs .nav-link.active {
+  font-weight: 600;
+  color: #0d6efd;
+}
+
+/* ----- Cards ----- */
+.card {
+  border: 1px solid #dee2e6;
+  border-radius: 0.65rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+}
+
+.card-header {
+  font-weight: 600;
+  background: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  border-radius: 0.65rem 0.65rem 0 0 !important;
+}
+
+/* ----- Control panel sidebar ----- */
+.control-panel {
+  max-height: calc(100vh - 160px);
+  overflow-y: auto;
+}
+
+/* ----- Plot containers ----- */
+.plot-container {
+  min-height: 480px;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.65rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+}
+
+/* ----- Convergence row (two plots side-by-side) ----- */
+.conv-plot {
+  min-height: 300px;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.65rem;
+}
+
+/* ----- Coloured dot in results table ----- */
+.dot {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* ----- Monospace for numbers in tables ----- */
+.font-mono {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.9em;
+}
+
+/* ----- Feature cards on home tab ----- */
+.feature-card {
+  border-left: 4px solid #0d6efd;
+  transition: box-shadow 0.2s;
+}
+
+.feature-card:hover {
+  box-shadow: 0 4px 16px rgba(13, 110, 253, 0.15);
+}
+
+.feature-card .icon-wrap {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+/* ----- Badges ----- */
+.badge {
+  font-size: 0.78em;
+  font-weight: 500;
+}
+
+/* ----- Range slider ----- */
+.form-range::-webkit-slider-thumb {
+  background: #0d6efd;
+}
+
+/* ----- Spin animation ----- */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ----- Responsive tweaks ----- */
+@media (max-width: 768px) {
+  .control-panel {
+    max-height: none;
+  }
+  .plot-container {
+    min-height: 320px;
+  }
+}
+
+/* ----- Highlight table rows on hover ----- */
+.table-hover tbody tr:hover {
+  background-color: #f0f4ff;
+}
+
+/* ----- Subtle section divider ----- */
+.section-divider {
+  border: none;
+  border-top: 1px solid #dee2e6;
+  margin: 1.5rem 0;
+}
+
+/* ----- Formula code block ----- */
+.formula-block {
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.88em;
+  background: #f3f4f6;
+  border: 1px solid #dee2e6;
+  border-radius: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  display: block;
+  word-break: break-word;
+  overflow-x: auto;
+}

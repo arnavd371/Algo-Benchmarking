@@ -7,6 +7,31 @@ symbolic computation to track convergence trajectories.
 
 ---
 
+## 🌐 Interactive Website
+
+The project is published as a **static website on GitHub Pages** — no installation or server required.
+
+👉 **Live site:** `https://arnavd371.github.io/Algo-Benchmarking/`
+
+The site has five interactive sections:
+
+| Section | Description |
+|---|---|
+| 🏠 **Home** | Overview of all benchmark functions and optimisers |
+| 🗺️ **Landscape** | Visualise any of the 8 benchmark functions as a 2-D contour heatmap |
+| 🚀 **Optimise** | Run one or more algorithms from a custom starting point; watch trajectories and live convergence curves |
+| 📊 **Compare** | Run all selected optimisers from the same start; compare final values and iteration counts with bar charts |
+| 🔬 **Hessian Spectrum** | Sample Hessian eigenvalues across the landscape to measure curvature and saddle-point density |
+
+All computation runs **entirely in the browser** (JavaScript + Plotly.js) — no Python server needed.
+
+### Deploying to GitHub Pages
+
+Enable GitHub Pages in your repository settings and set the source to the **`docs/` folder** on the `main` branch.
+The static site is in `docs/` and a `.nojekyll` file is included so GitHub Pages serves it without Jekyll processing.
+
+---
+
 ## Features
 
 | Module | What it provides |
@@ -112,6 +137,14 @@ pytest tests/ -q
 
 ```
 Algo-Benchmarking/
+├── docs/                      # GitHub Pages static website
+│   ├── index.html             # Single-page interactive app
+│   ├── style.css              # Custom styles
+│   ├── .nojekyll              # Disables Jekyll processing
+│   └── js/
+│       ├── functions.js       # All 8 benchmark functions (JS port)
+│       ├── optimizers.js      # GD, Momentum, Adam, RMSprop (JS port)
+│       └── app.js             # Plotly.js plots + UI logic
 ├── benchmarking/
 │   ├── __init__.py
 │   ├── functions.py       # Benchmark function library

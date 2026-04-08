@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algo-Benchmarking — Non-Convex Optimisation Visualiser</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <!-- Plotly.js (full bundle) -->
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<nav class="navbar navbar-dark bg-dark py-2">
+  <div class="container-xl">
+    <span class="navbar-brand fw-bold fs-5">
+      <i class="bi bi-graph-up-arrow me-2 text-info"></i>Algo-Benchmarking
+    </span>
+    <span class="navbar-text text-secondary small d-none d-md-block">
+      Non-Convex Optimisation Visualiser
+    </span>
+    <a href="https://github.com/arnavd371/Algo-Benchmarking" target="_blank" rel="noopener"
+       class="btn btn-sm btn-outline-light">
+      <i class="bi bi-github me-1"></i>GitHub
+    </a>
+  </div>
+</nav>
+
+<!-- ===================== MAIN ===================== -->
+<div class="container-xl py-4">
+
+  <!-- Tab nav -->
+  <ul class="nav nav-tabs nav-fill mb-4" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#pane-home" type="button">
+        <i class="bi bi-house-fill me-1"></i>Home
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#pane-landscape" type="button">
+        <i class="bi bi-map-fill me-1"></i>Landscape
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#pane-optimise" type="button">
+        <i class="bi bi-play-circle-fill me-1"></i>Optimise
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#pane-compare" type="button">
+        <i class="bi bi-bar-chart-fill me-1"></i>Compare
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#pane-spectrum" type="button">
+        <i class="bi bi-activity me-1"></i>Hessian Spectrum
+      </button>
+    </li>
+  </ul>
+
+  <!-- Tab content -->
+  <div class="tab-content">
+
+    <!-- ============================================================ -->
+    <!-- HOME TAB                                                      -->
+    <!-- ============================================================ -->
+    <div class="tab-pane fade show active" id="pane-home" role="tabpanel">
+
+      <div class="row align-items-center mb-5">
+        <div class="col-lg-7">
+          <h1 class="display-5 fw-bold mb-3">
+            <i class="bi bi-graph-up-arrow text-primary me-3"></i>Algo-Benchmarking
+          </h1>
+          <p class="lead text-muted mb-4">
+            An interactive tool for exploring <strong>non-convex optimisation landscapes</strong>
+            and benchmarking gradient-based algorithms. Select any of eight classic benchmark
+            functions, visualise the 2-D landscape as a heatmap, then watch your chosen
+            optimisers navigate the terrain in real time.
+          </p>
+          <div class="d-flex gap-3 flex-wrap">
+            <button class="btn btn-primary btn-lg"
+                    onclick="document.querySelector('[data-bs-target=\'#pane-landscape\']').click()">
+              <i class="bi bi-map-fill me-2"></i>Explore a landscape
+            </button>
+            <button class="btn btn-outline-primary btn-lg"
+                    onclick="document.querySelector('[data-bs-target=\'#pane-optimise\']').click()">
+              <i class="bi bi-play-circle me-2"></i>Run optimisers
+            </button>
+          </div>
+        </div>
+        <div class="col-lg-5 mt-4 mt-lg-0 text-center">
+          <div class="bg-dark rounded-4 p-3 text-start" style="font-family:monospace; font-size:0.85rem; line-height:1.8; color:#a8d8a8;">
+            <span class="text-info">// 8 benchmark functions</span><br/>
+            Rastrigin · Ackley · Rosenbrock<br/>
+            Himmelblau · Levy · Schwefel<br/>
+            Griewank · Sphere<br/><br/>
+            <span class="text-info">// 4 optimisation algorithms</span><br/>
+            Gradient Descent (Armijo LS)<br/>
+            SGD + Nesterov Momentum<br/>
+            Adam · RMSprop<br/><br/>
+            <span class="text-info">// fully client-side — no server needed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature cards -->
+      <h4 class="fw-semibold mb-3">What can you do?</h4>
+      <div class="row g-3 mb-5">
+
+        <div class="col-sm-6 col-xl-3">
+          <div class="card h-100 feature-card p-3">
+            <div class="icon-wrap text-primary mb-2"><i class="bi bi-map-fill"></i></div>
+            <h6 class="fw-bold">Landscape Explorer</h6>
+            <p class="small text-muted mb-0">
+              Visualise any of the 8 benchmark functions as an interactive 2-D contour heatmap.
+              Toggle log scale, adjust resolution, and mark the global minimum.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+          <div class="card h-100 feature-card p-3" style="border-left-color:#27ae60;">
+            <div class="icon-wrap text-success mb-2"><i class="bi bi-play-circle-fill"></i></div>
+            <h6 class="fw-bold">Optimisation</h6>
+            <p class="small text-muted mb-0">
+              Set a starting point (or click on the map), pick one or more optimisers,
+              and watch their trajectories unfold over the landscape alongside live convergence curves.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+          <div class="card h-100 feature-card p-3" style="border-left-color:#e67e22;">
+            <div class="icon-wrap mb-2" style="color:#e67e22;"><i class="bi bi-bar-chart-fill"></i></div>
+            <h6 class="fw-bold">Benchmark Compare</h6>
+            <p class="small text-muted mb-0">
+              Run all selected optimisers from the same start and compare final objective values,
+              iteration counts, and convergence behaviour with bar charts and tables.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+          <div class="card h-100 feature-card p-3" style="border-left-color:#8e44ad;">
+            <div class="icon-wrap mb-2" style="color:#8e44ad;"><i class="bi bi-activity"></i></div>
+            <h6 class="fw-bold">Hessian Spectrum</h6>
+            <p class="small text-muted mb-0">
+              Sample Hessian eigenvalues across the landscape to measure curvature.
+              Discover how many directions are convex vs concave, and estimate saddle-point density.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Function reference table -->
+      <h4 class="fw-semibold mb-3">Benchmark Functions</h4>
+      <div class="table-responsive mb-5">
+        <table class="table table-hover table-bordered align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th>Function</th>
+              <th>Bounds</th>
+              <th>Global min</th>
+              <th>Characteristic</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Rastrigin</strong></td><td>[-5.12, 5.12]</td><td>f(0,…,0) = 0</td><td>Highly multimodal — evenly spaced local minima</td></tr>
+            <tr><td><strong>Ackley</strong></td><td>[-32.768, 32.768]</td><td>f(0,…,0) = 0</td><td>Nearly flat with a deep central pit</td></tr>
+            <tr><td><strong>Rosenbrock</strong></td><td>[-5, 10]</td><td>f(1,…,1) = 0</td><td>Curved banana-shaped narrow valley</td></tr>
+            <tr><td><strong>Himmelblau</strong></td><td>[-5, 5]</td><td>4 equal minima = 0</td><td>Four symmetric local minima (2-D only)</td></tr>
+            <tr><td><strong>Levy</strong></td><td>[-10, 10]</td><td>f(1,…,1) = 0</td><td>Multimodal with oscillating landscape</td></tr>
+            <tr><td><strong>Schwefel</strong></td><td>[-500, 500]</td><td>f(420.97,…) ≈ 0</td><td>Deceptive — global min far from next-best</td></tr>
+            <tr><td><strong>Griewank</strong></td><td>[-600, 600]</td><td>f(0,…,0) = 0</td><td>Widespread local minima from product term</td></tr>
+            <tr><td><strong>Sphere</strong></td><td>[-5, 5]</td><td>f(0,…,0) = 0</td><td>Convex baseline — single bowl-shaped minimum</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /home -->
+
+    <!-- ============================================================ -->
+    <!-- LANDSCAPE TAB                                                 -->
+    <!-- ============================================================ -->
+    <div class="tab-pane fade" id="pane-landscape" role="tabpanel">
+
+      <div class="row g-3">
+
+        <!-- Controls -->
+        <div class="col-lg-3">
+          <div class="card control-panel">
+            <div class="card-header"><i class="bi bi-sliders me-1"></i>Controls</div>
+            <div class="card-body">
+
+              <label class="form-label fw-semibold">Function</label>
+              <select id="land-func" class="form-select form-select-sm mb-3"></select>
+
+              <label class="form-label fw-semibold">
+                Grid resolution: <span id="land-grid-val" class="text-primary">100</span>
+              </label>
+              <input type="range" id="land-grid" class="form-range mb-3" min="50" max="200" step="10" value="100" />
+
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="land-log" />
+                <label class="form-check-label" for="land-log">Logarithmic colour scale</label>
+              </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="land-mark-min" checked />
+                <label class="form-check-label" for="land-mark-min">Mark global minimum ★</label>
+              </div>
+
+              <button id="land-plot-btn" class="btn btn-primary w-100">
+                <i class="bi bi-map me-1"></i>Plot
+              </button>
+            </div>
+          </div>
+
+          <!-- Function info card -->
+          <div class="card mt-3">
+            <div class="card-header"><i class="bi bi-info-circle me-1"></i>Function info</div>
+            <div class="card-body">
+              <h6 id="land-func-name" class="fw-bold mb-1">—</h6>
+              <p id="land-func-desc" class="small text-muted mb-2">—</p>
+              <code id="land-func-formula" class="formula-block mb-2">—</code>
+              <div class="small">
+                <div>Bounds: <strong id="land-bounds">—</strong></div>
+                <div>Global min value: <strong id="land-global-min">—</strong></div>
+                <div>Global min location: <strong id="land-global-min-loc">—</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plot -->
+        <div class="col-lg-9">
+          <div id="landscape-plot" class="plot-container" style="height:580px;"></div>
+        </div>
+
+      </div>
+    </div><!-- /landscape -->
+
+    <!-- ============================================================ -->
+    <!-- OPTIMISE TAB                                                  -->
+    <!-- ============================================================ -->
+    <div class="tab-pane fade" id="pane-optimise" role="tabpanel">
+
+      <div class="row g-3">
+
+        <!-- Controls -->
+        <div class="col-lg-3">
+          <div class="card control-panel">
+            <div class="card-header"><i class="bi bi-sliders me-1"></i>Controls</div>
+            <div class="card-body">
+
+              <label class="form-label fw-semibold">Function</label>
+              <select id="opt-func" class="form-select form-select-sm mb-3"></select>
+
+              <hr class="section-divider" />
+
+              <label class="form-label fw-semibold">Optimisers</label>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="opt-check-gradient_descent" checked />
+                  <label class="form-check-label small" for="opt-check-gradient_descent">
+                    <span class="dot" style="background:#e74c3c;"></span>Gradient Descent
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="opt-check-sgd_momentum" />
+                  <label class="form-check-label small" for="opt-check-sgd_momentum">
+                    <span class="dot" style="background:#3498db;"></span>SGD + Momentum
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="opt-check-adam" checked />
+                  <label class="form-check-label small" for="opt-check-adam">
+                    <span class="dot" style="background:#27ae60;"></span>Adam
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="opt-check-rmsprop" />
+                  <label class="form-check-label small" for="opt-check-rmsprop">
+                    <span class="dot" style="background:#e67e22;"></span>RMSprop
+                  </label>
+                </div>
+              </div>
+
+              <hr class="section-divider" />
+
+              <label class="form-label fw-semibold">
+                Start x₁: <span id="opt-x1-val" class="text-primary">0.00</span>
+              </label>
+              <input type="range" id="opt-x1" class="form-range mb-2" />
+
+              <label class="form-label fw-semibold">
+                Start x₂: <span id="opt-x2-val" class="text-primary">0.00</span>
+              </label>
+              <input type="range" id="opt-x2" class="form-range mb-3" />
+              <p class="text-muted small mb-3">
+                <i class="bi bi-cursor-fill me-1"></i>You can also click on the map to set the start point.
+              </p>
+
+              <hr class="section-divider" />
+
+              <label class="form-label fw-semibold">
+                Learning rate: <span id="opt-lr-val" class="text-primary">0.0500</span>
+              </label>
+              <input type="range" id="opt-lr" class="form-range mb-3" min="0.0001" max="0.5" step="0.0005" value="0.05" />
+
+              <label class="form-label fw-semibold">Max iterations</label>
+              <input type="number" id="opt-maxiter" class="form-control form-control-sm mb-3" min="100" max="10000" step="100" value="2000" />
+
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="opt-log" />
+                <label class="form-check-label" for="opt-log">Log colour scale</label>
+              </div>
+
+              <button id="opt-run-btn" class="btn btn-success w-100 fw-semibold">
+                <i class="bi bi-play-circle me-1"></i>Run
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Landscape + convergence -->
+        <div class="col-lg-9">
+          <div id="opt-landscape" class="plot-container" style="height:520px;"></div>
+
+          <div id="opt-conv-row" class="row g-3 mt-1 d-none">
+            <div class="col-md-6">
+              <div id="opt-conv-values" class="conv-plot" style="height:300px;"></div>
+            </div>
+            <div class="col-md-6">
+              <div id="opt-conv-grads" class="conv-plot" style="height:300px;"></div>
+            </div>
+          </div>
+
+          <div id="opt-results-card" class="card mt-3 d-none">
+            <div class="card-header"><i class="bi bi-table me-1"></i>Results</div>
+            <div class="card-body p-0">
+              <table class="table table-hover table-sm mb-0 align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Optimiser</th>
+                    <th class="text-end">Final f(x)</th>
+                    <th class="text-end">Iterations</th>
+                    <th class="text-center">Converged</th>
+                  </tr>
+                </thead>
+                <tbody id="opt-results-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /optimise -->
+
+    <!-- ============================================================ -->
+    <!-- COMPARE TAB                                                   -->
+    <!-- ============================================================ -->
+    <div class="tab-pane fade" id="pane-compare" role="tabpanel">
+
+      <div class="row g-3">
+
+        <!-- Controls -->
+        <div class="col-lg-3">
+          <div class="card control-panel">
+            <div class="card-header"><i class="bi bi-sliders me-1"></i>Controls</div>
+            <div class="card-body">
+
+              <label class="form-label fw-semibold">Function</label>
+              <select id="cmp-func" class="form-select form-select-sm mb-3"></select>
+
+              <hr class="section-divider" />
+
+              <label class="form-label fw-semibold">Optimisers to compare</label>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="cmp-check-gradient_descent" checked />
+                  <label class="form-check-label small" for="cmp-check-gradient_descent">
+                    <span class="dot" style="background:#e74c3c;"></span>Gradient Descent
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="cmp-check-sgd_momentum" checked />
+                  <label class="form-check-label small" for="cmp-check-sgd_momentum">
+                    <span class="dot" style="background:#3498db;"></span>SGD + Momentum
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="cmp-check-adam" checked />
+                  <label class="form-check-label small" for="cmp-check-adam">
+                    <span class="dot" style="background:#27ae60;"></span>Adam
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="cmp-check-rmsprop" checked />
+                  <label class="form-check-label small" for="cmp-check-rmsprop">
+                    <span class="dot" style="background:#e67e22;"></span>RMSprop
+                  </label>
+                </div>
+              </div>
+
+              <hr class="section-divider" />
+
+              <label class="form-label fw-semibold">
+                Start x₁: <span id="cmp-x1-val" class="text-primary">0.00</span>
+              </label>
+              <input type="range" id="cmp-x1" class="form-range mb-2" />
+
+              <label class="form-label fw-semibold">
+                Start x₂: <span id="cmp-x2-val" class="text-primary">0.00</span>
+              </label>
+              <input type="range" id="cmp-x2" class="form-range mb-3" />
+
+              <hr class="section-divider" />
+
+              <label class="form-label fw-semibold">
+                Learning rate: <span id="cmp-lr-val" class="text-primary">0.0500</span>
+              </label>
+              <input type="range" id="cmp-lr" class="form-range mb-3" min="0.0001" max="0.5" step="0.0005" value="0.05" />
+
+              <label class="form-label fw-semibold">Max iterations</label>
+              <input type="number" id="cmp-maxiter" class="form-control form-control-sm mb-3" min="100" max="10000" step="100" value="2000" />
+
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="cmp-log" />
+                <label class="form-check-label" for="cmp-log">Log colour scale</label>
+              </div>
+
+              <button id="cmp-run-btn" class="btn btn-warning fw-semibold w-100 text-dark">
+                <i class="bi bi-bar-chart me-1"></i>Compare
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="col-lg-9">
+
+          <!-- Landscape with all trajectories -->
+          <div id="cmp-landscape" class="plot-container" style="height:520px;"></div>
+
+          <div id="cmp-results-section" class="d-none">
+            <div class="row g-3 mt-1">
+              <div class="col-md-6">
+                <div id="cmp-conv-values" class="conv-plot" style="height:300px;"></div>
+              </div>
+              <div class="col-md-6">
+                <div id="cmp-conv-grads" class="conv-plot" style="height:300px;"></div>
+              </div>
+            </div>
+
+            <div class="row g-3 mt-1">
+              <div class="col-md-6">
+                <div id="cmp-bar" class="conv-plot" style="height:320px;"></div>
+              </div>
+              <div class="col-md-6">
+                <div id="cmp-iter-bar" class="conv-plot" style="height:320px;"></div>
+              </div>
+            </div>
+
+            <div class="card mt-3">
+              <div class="card-header"><i class="bi bi-table me-1"></i>Results</div>
+              <div class="card-body p-0">
+                <table class="table table-hover table-sm mb-0 align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Optimiser</th>
+                      <th class="text-end">Final f(x)</th>
+                      <th class="text-end">Iterations</th>
+                      <th class="text-center">Converged</th>
+                    </tr>
+                  </thead>
+                  <tbody id="cmp-results-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div><!-- /results section -->
+        </div>
+
+      </div>
+    </div><!-- /compare -->
+
+    <!-- ============================================================ -->
+    <!-- HESSIAN SPECTRUM TAB                                          -->
+    <!-- ============================================================ -->
+    <div class="tab-pane fade" id="pane-spectrum" role="tabpanel">
+
+      <div class="row g-3">
+
+        <!-- Controls -->
+        <div class="col-lg-3">
+          <div class="card">
+            <div class="card-header"><i class="bi bi-sliders me-1"></i>Controls</div>
+            <div class="card-body">
+
+              <label class="form-label fw-semibold">Function</label>
+              <select id="spec-func" class="form-select form-select-sm mb-3"></select>
+
+              <label class="form-label fw-semibold">
+                Sample points: <span id="spec-samples-val" class="text-primary">200</span>
+              </label>
+              <input type="range" id="spec-samples" class="form-range mb-3" min="50" max="500" step="25" value="200" />
+
+              <label class="form-label fw-semibold">Histogram bins</label>
+              <select id="spec-bins" class="form-select form-select-sm mb-4">
+                <option value="30">30</option>
+                <option value="60" selected>60</option>
+                <option value="90">90</option>
+                <option value="120">120</option>
+              </select>
+
+              <button id="spec-run-btn" class="btn btn-primary w-100">
+                <i class="bi bi-activity me-1"></i>Compute spectrum
+              </button>
+
+              <div class="alert alert-info mt-3 small mb-0 p-2">
+                <i class="bi bi-lightbulb me-1"></i>
+                <strong>Tip:</strong> The eigenvalues of the Hessian at a point tell you about local curvature.
+                All-positive = local minimum; mixed signs = saddle point.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plot + stats -->
+        <div class="col-lg-9">
+          <div id="spec-plot" class="plot-container" style="height:420px;"></div>
+
+          <div id="spec-stats-card" class="card mt-3 d-none">
+            <div class="card-header"><i class="bi bi-clipboard-data me-1"></i>Eigenvalue statistics</div>
+            <div class="card-body">
+              <div id="spec-stats"></div>
+              <hr class="section-divider" />
+              <div class="small text-muted">
+                <strong>Interpretation guide:</strong><br />
+                <span class="text-success">■ Positive eigenvalues</span> indicate locally convex (bowl-shaped) directions.<br />
+                <span class="text-danger">■ Negative eigenvalues</span> indicate concave directions — the point is a saddle point or local maximum.<br />
+                <span class="text-secondary">■ Near-zero eigenvalues</span> indicate flat regions where gradient-based methods slow down significantly.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /spectrum -->
+
+  </div><!-- /tab-content -->
+
+</div><!-- /container -->
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="bg-dark text-center py-3 mt-4">
+  <span class="text-secondary small">
+    Algo-Benchmarking &nbsp;·&nbsp;
+    Interactive non-convex optimisation visualiser &nbsp;·&nbsp;
+    <a href="https://github.com/arnavd371/Algo-Benchmarking" target="_blank" rel="noopener"
+       class="text-secondary">View on GitHub</a>
+  </span>
+</footer>
+
+<!-- Bootstrap 5 JS bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Application scripts -->
+<script src="js/functions.js"></script>
+<script src="js/optimizers.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
